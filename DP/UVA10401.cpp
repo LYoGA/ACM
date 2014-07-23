@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include <cstring>
+#include <cmath>
 #include <algorithm>
 
 const int MAXN = 20;
@@ -29,14 +30,14 @@ void dp() {
         if (str[i - 1] == '?') {
             for (int j = 1; j <= len; j++) {
                 for (int k = 1; k <= len; k++)  
-                    if (k != j && k != j - 1 && k != j + 1)
+                    if (abs(k - j) > 1)
                         d[i][j] += d[i - 1][k]; 
             } 
         } 
         else {
             int cur = change(str[i - 1]); 
             for (int k = 1; k <= len; k++) 
-                if (k != cur && k != cur - 1 && k != cur + 1)
+                if (abs(k - cur) > 1)
                     d[i][cur] += d[i - 1][k]; 
         }  
     }
