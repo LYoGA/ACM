@@ -52,7 +52,7 @@ int main() {
                 sum[i][j] = sum[i][j - 1] + arr[i][j];
             } 
         } 
-       
+        
         ans = 0;
         for (int i = 0; i < w; i++) {
             int Max = 0;
