@@ -2,17 +2,19 @@
 #include <cstdio>
 #include <cstring>
 #include <cmath>
+#include <algorithm>
 
+typedef long long ll;
 using namespace std;
 
 int pow_mod(int a, int n, int m) {
-    a %= m;
-    if (n == 0)
-        return 1;
+    if (n == 1)
+        return a % m;
+    ll x = pow_mod(a, n / 2, m);
+    ll ans = (x * x) % m;
     if (n % 2)
-        return pow_mod(a * a, n / 2, m) * a % m;
-    else
-        return pow_mod(a * a, n / 2, m);
+        ans = ans * a % m;
+    return ans;
 }
 
 int solve(int a, int b) {
