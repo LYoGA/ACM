@@ -6,7 +6,7 @@
 using namespace std;
 
 const int MAXN = 20010;
-const int MAXM = 50010;
+const int MAXM = 150010;
 
 struct Edge{
     int to, next;
@@ -18,6 +18,7 @@ int Index, top;
 int scc;
 bool Instack[MAXN];
 int num[MAXN];
+int n, m;
 
 void init() {
     tot = 0;
@@ -40,7 +41,6 @@ void Tarjan(int u) {
         if (!DFN[v]) {
             Tarjan(v); 
             if (Low[u] > Low[v]) Low[u] = Low[v];
-
         } 
         else if (Instack[v] && Low[u] > DFN[v]) 
             Low[u] = DFN[v];
@@ -69,7 +69,20 @@ void solve() {
 }
 
 int main() {
-
-
+    while (scanf("%d%d", &n, &m)) {
+        if (n == 0 && m == 0) 
+            break;
+        init();
+        int u, v;
+        for (int i = 0; i < m; i++) {
+            scanf("%d%d", &u, &v); 
+            addedge(u, v);
+        }
+        solve(); 
+        if (scc == 1)
+            printf("Yes\n");
+        else
+            printf("No\n");
+    }
     return 0;
 }

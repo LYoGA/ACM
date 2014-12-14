@@ -5,8 +5,8 @@
 
 using namespace std;
 
-const int MAXN = 100100;
-const int MAXM = 100100;
+const int MAXN = 20010;
+const int MAXM = 50010;
 
 struct Edge{
     int to, next;
@@ -18,7 +18,7 @@ int Index, top;
 int scc;
 bool Instack[MAXN];
 int num[MAXN];
-int dg[MAXN];
+int in[MAXN], out[MAXN];
 int n, m;
 
 void init() {
@@ -42,7 +42,6 @@ void Tarjan(int u) {
         if (!DFN[v]) {
             Tarjan(v); 
             if (Low[u] > Low[v]) Low[u] = Low[v];
-
         } 
         else if (Instack[v] && Low[u] > DFN[v]) 
             Low[u] = DFN[v];
@@ -71,30 +70,40 @@ void solve() {
 }
 
 int main() {
-    int cas;
-    scanf("%d", &cas);
-    while (cas--) {
+    while (scanf("%d%d", &n, &m) != EOF) {
         init();
-        scanf("%d%d", &n, &m);         
         int u, v;
         for (int i = 0; i < m; i++) {
             scanf("%d%d", &u, &v); 
             addedge(u, v);
-        } 
-        solve();   
-        memset(dg, 0, sizeof(dg));
-        for (int u = 1; u <= n; u++) {
-            for (int i = head[u]; i != -1; i = edge[i].next) {
-                int v = edge[i].to; 
-                if (Low[u] != Low[v]) 
-                    dg[Belong[v]]++;
-            } 
         }
-        int ans = 0;
-        for (int i = 1; i <= scc; i++)
-            if (dg[i] == 0)
-                ans++;
-        printf("%d\n", ans);
+        solve(); 
+
+        if (scc == 1) {
+            printf("0\n"); 
+            continue;
+        }
+        else {
+            memset(in, 0, sizeof(in));
+            memset(out, 0, sizeof(out));
+            for (int u = 1; u <= n; u++) {
+                for (int i = head[u]; i != -1; i = edge[i].next) {
+                    int v = edge[i].to;
+                    if (Belong[u] != Belong[v]) {
+                        out[Belong[u]]++;
+                        in[Belong[v]]++;
+                    }
+                }         
+            }
+            int ans = 0, a = 0, b = 0;
+            for (int i = 1; i <= scc; i++) {
+                if (out[i] == 0) a++;
+                if (in[i] == 0) b++; 
+            }
+            ans = max(a, b);
+            printf("%d\n", ans);
+        }
     }
+
     return 0;
 }
